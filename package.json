@@ -1,13 +1,15 @@
 {
   "name": "pdf-assistant",
   "version": "0.1.0",
-  "description": "AI-powered PDF document assistant — PDF extraction milestone",
+  "description": "PDF document assistant with page citations and multilingual semantic search",
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
-    "postinstall": "node scripts/copy-pdf-worker.mjs"
+    "postinstall": "node scripts/copy-pdf-worker.mjs",
+    "test": "node --test tests/*.test.ts",
+    "test:semantic": "node scripts/check-semantic-search.mjs"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   },
   "homepage": "https://github.com/MirayBozdogan/pdf-assistant#readme",
   "dependencies": {
+    "@huggingface/transformers": "^4.3.2",
     "next": "^16.4.6",
     "pdfjs-dist": "^6.5.438",
     "react": "^19.3.1",

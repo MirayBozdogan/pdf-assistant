@@ -6,3 +6,4 @@ out/
 public/pdf.worker.min.mjs
 *.tsbuildinfo
 .DS_Store
+.cache/

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PDF Assistant",
-  description: "PDF belgelerinizi yükleyin ve içeriklerini sayfa sayfa inceleyin.",
+  description: "PDF belgelerinizde anlam odaklı arama yapın ve ilgili kaynak sayfalarını inceleyin.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

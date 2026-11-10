@@ -2,9 +2,12 @@
 
 import { useRef, useState } from "react";
 import { extractPdf, type PdfText } from "../lib/pdf";
+import DocumentSearch from "./document-search";
 
 export default function Home() {
   const input = useRef<HTMLInputElement>(null);
+  const reader = useRef<HTMLElement>(null);
+  const [revision, setRevision] = useState(0);
   const [document, setDocument] = useState<PdfText | null>(null);
   const [filename, setFilename] = useState("");
   const [busy, setBusy] = useState(false);
@@ -16,6 +19,7 @@ export default function Home() {
     setBusy(true);
     setError("");
     setDocument(null);
+    setRevision((value) => value + 1);
     setFilename(file.name);
     setSelectedPage(1);
     setProgress("PDF açılıyor…");
@@ -43,7 +47,7 @@ export default function Home() {
       <section className="intro">
         <p className="eyebrow">ÇALIŞMA ALANI</p>
         <h1>Belgelerinize <span>yakından bakın.</span></h1>
-        <p className="lead">PDF yükleyin, içeriğini sayfa sayfa inceleyin.</p>
+        <p className="lead">PDF yükleyin, belgenizde arama yapın ve kaynak sayfalarını inceleyin.</p>
       </section>
 
       <div className="workspace">
@@ -58,17 +62,18 @@ export default function Home() {
             <input ref={input} id="pdf-file" type="file" accept=".pdf,application/pdf" disabled={busy} aria-label="PDF dosyası seç" onChange={(event) => { const file = event.target.files?.[0]; if (file) void readFile(file); }} />
             <button type="button" disabled={busy} onClick={() => input.current?.click()}>{busy ? "Belge okunuyor…" : document ? "Başka PDF seç" : "PDF seç"}<span aria-hidden="true"> ↑</span></button>
           </div>
-          <p className="privacy">Dosyanız tarayıcınızda işlenir, sunucuya gönderilmez.</p>
+          <p className="privacy">PDF tarayıcınızda okunur. Arama sırasında metin, bu uygulamanın sunucusunda işlenir ve saklanmaz.</p>
           <div role="status" aria-live="polite">{busy && <p className="notice">{progress}</p>}</div>
           {error && <p role="alert" className="error">{error}</p>}
           {document && <div className="file-summary"><span className="check" aria-hidden="true">✓</span><div><strong>{filename}</strong><span>{document.pages.length} sayfa · {document.characterCount.toLocaleString("tr-TR")} karakter</span></div></div>}
         </section>
 
-        <section className="reader-card" aria-labelledby="reader-title">
+        <section ref={reader} className="reader-card" aria-labelledby="reader-title">
           <div className="reader-heading"><div><div className="section-label">İÇERİK</div><h2 id="reader-title">Belge içeriği</h2></div>{document && <label className="page-select">Sayfa <select aria-label="Görüntülenecek sayfa" value={selectedPage} onChange={(e) => setSelectedPage(Number(e.target.value))}>{document.pages.map((item) => <option key={item.number} value={item.number}>{item.number} / {document.pages.length}</option>)}</select></label>}</div>
           {document ? <><div className="source-label">{filename} · Sayfa {selectedPage}</div>{document.characterCount === 0 && <p role="status" className="notice">Bu belgede okunabilir metin bulunamadı. Taranmış belgeler desteklenmiyor. Lütfen metni seçilebilen bir PDF yükleyin.</p>}<div className="page-text" tabIndex={0} aria-label={`Sayfa ${selectedPage} metni`}>{page?.text || "Bu sayfada okunabilir metin bulunamadı."}</div><p className="reader-note">Belge düzenine bağlı olarak metin sırası farklılık gösterebilir.</p></> : <div className="empty-state"><div className="text-lines" aria-hidden="true"><i /><i /><i /></div><h3>{busy ? "Belgeniz hazırlanıyor" : "Henüz bir belge seçilmedi"}</h3><p>{busy ? "Belgenin uzunluğuna göre bu işlem birkaç saniye sürebilir." : "İçeriği görüntülemek için bir PDF yükleyin."}</p></div>}
         </section>
       </div>
+      <DocumentSearch key={revision} document={document} onSource={(number) => { setSelectedPage(number); reader.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }} />
       <footer>PDF Assistant <span>Belgeleriniz sizin kontrolünüzde.</span></footer>
     </main>
   );
