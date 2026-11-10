@@ -1,0 +1,8 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+public/pdf.worker.min.mjs
+*.tsbuildinfo
+.DS_Store

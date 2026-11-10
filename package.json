@@ -1,0 +1,40 @@
+{
+  "name": "pdf-assistant",
+  "version": "0.1.0",
+  "description": "AI-powered PDF document assistant — PDF extraction milestone",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "node scripts/copy-pdf-worker.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MirayBozdogan/pdf-assistant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/MirayBozdogan/pdf-assistant/issues"
+  },
+  "homepage": "https://github.com/MirayBozdogan/pdf-assistant#readme",
+  "dependencies": {
+    "next": "^16.4.6",
+    "pdfjs-dist": "^6.5.438",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}
