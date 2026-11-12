@@ -62,7 +62,7 @@ export default function Home() {
             <input ref={input} id="pdf-file" type="file" accept=".pdf,application/pdf" disabled={busy} aria-label="PDF dosyası seç" onChange={(event) => { const file = event.target.files?.[0]; if (file) void readFile(file); }} />
             <button type="button" disabled={busy} onClick={() => input.current?.click()}>{busy ? "Belge okunuyor…" : document ? "Başka PDF seç" : "PDF seç"}<span aria-hidden="true"> ↑</span></button>
           </div>
-          <p className="privacy">PDF tarayıcınızda okunur. Arama sırasında metin, bu uygulamanın sunucusunda işlenir ve saklanmaz.</p>
+          <p className="privacy">PDF tarayıcınızda okunur. Arama uygulama sunucusunda yapılır; cevap oluşturursanız yalnızca sorunuz ve ilgili bölümler Amazon Bedrock’a gönderilir.</p>
           <div role="status" aria-live="polite">{busy && <p className="notice">{progress}</p>}</div>
           {error && <p role="alert" className="error">{error}</p>}
           {document && <div className="file-summary"><span className="check" aria-hidden="true">✓</span><div><strong>{filename}</strong><span>{document.pages.length} sayfa · {document.characterCount.toLocaleString("tr-TR")} karakter</span></div></div>}
