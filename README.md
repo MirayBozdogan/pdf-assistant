@@ -48,6 +48,8 @@ Copy `.env.example` to `.env.local` and set `AWS_REGION` and `BEDROCK_MODEL_ID` 
 
 Authenticate locally through the AWS SDK's default credential chain, for example an AWS CLI profile with IAM Identity Center (`aws sso login --profile your-profile`, then set `AWS_PROFILE`). When deploying on AWS, use an IAM role. The identity needs `bedrock:InvokeModel` for the selected model/profile and, where applicable, its destination model resources. Refer to AWS documentation for the exact policy required for your model and region.
 
+For a local session, a short-term key from the Bedrock console is another option: set `AWS_BEARER_TOKEN_BEDROCK` only in `.env.local`. Generate it in the same region as `AWS_REGION`. It inherits the console identity's permissions and expires with that session, at most 12 hours. The AWS SDK reads this environment variable automatically. Do not use or publish a long-term key for this setup. See [AWS API key documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html).
+
 Do not put credentials in client code, commit secrets, or prefix these settings with `NEXT_PUBLIC_`. No real credentials are included in the repository. AWS inference usage may incur charges.
 
 Search first, then click **Cevap oluştur**. This sends only the question and the retrieved excerpts to Bedrock, not the full PDF. Local search still works without Bedrock configuration; requesting an answer returns a clear unavailable message until configuration is complete.
