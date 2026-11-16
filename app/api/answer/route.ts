@@ -15,6 +15,10 @@ export async function POST(request: Request) {
     return Response.json(await generateAnswer(input, signal), { headers });
   } catch (error) {
     if (error instanceof AnswerInputError) return Response.json({ error: error.message }, { status: 400, headers });
+    // Server-side diagnostics only; the question and excerpts are never logged.
+    const meta = (error as { $metadata?: { httpStatusCode?: number; requestId?: string } } | null)?.$metadata;
+    console.error("Answer generation failed:", error instanceof Error ? `${error.name}: ${error.message}` : error,
+      meta ? { httpStatus: meta.httpStatusCode, requestId: meta.requestId } : "");
     const response = answerErrorResponse(error);
     return Response.json({ error: response.error }, { status: response.status, headers });
   }
