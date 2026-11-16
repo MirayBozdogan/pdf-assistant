@@ -86,7 +86,7 @@ npm run build
 npm run test:semantic
 ```
 
-Unit tests cover source coverage, page attribution, invalid chunk settings, vector ranking and duplicate suppression. The semantic check reports the expected source's rank for three Turkish paraphrase queries and enforces a baseline of at least two correct top results. The current q8 model ranks the login and return-policy passages first, but the shipping question can rank its correct passage behind unrelated results. This known retrieval weakness is reported rather than hidden by the test. This is a small smoke test, not a retrieval quality benchmark. Internet access is required on first run.
+Unit tests cover source coverage, page attribution, invalid chunk settings, vector ranking and duplicate suppression. The semantic check embeds a synthetic eight-page Turkish handbook (`scripts/retrieval-eval.json`) and 22 direct, paraphrased, distractor and unanswerable queries. It reports each query's rank and top-1, recall@3 and MRR by query type, and fails if top-1 or recall@3 drops below the recorded baseline (14/18 and 17/18). Some paraphrased and distractor queries rank their source below unrelated passages, and unanswerable queries can score higher than correct matches, so a similarity threshold alone cannot detect missing answers. This is a small synthetic evaluation, not a general retrieval benchmark. Internet access is required on first run.
 
 Answer tests use synthetic responses to check fabricated citations, invented quotes, page attribution, missing evidence, malformed output and unconfigured provider behavior. They do not make paid AWS calls or establish live answer quality. Live Bedrock testing requires valid AWS authentication and a selected model.
 
@@ -105,7 +105,7 @@ lib/answers.ts               Grounding instructions, request and source validati
 lib/bedrock.ts               Server-side Bedrock Converse integration
 lib/retrieval.ts             Cosine ranking and duplicate suppression
 tests/retrieval.test.ts      Chunking and retrieval tests
-scripts/                    Worker setup and semantic smoke test
+scripts/                    Worker setup and retrieval evaluation
 ```
 
 ## Limitations and planned work
